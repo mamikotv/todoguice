@@ -18,6 +18,14 @@
     <guice.version>5.0.1</guice.version>
     <junit.version>5.7.1</junit.version>
     <freemarker.version>2.3.31</freemarker.version>
+    <postgres.version>42.2.20</postgres.version>
+
+    <!-- flyway -->
+    <flyway.version>7.8.2</flyway.version>
+    <flyway.url>jdbc:postgresql://192.168.33.11:5432/tododb</flyway.url>
+    <flyway.user>dbuser</flyway.user>
+    <flyway.password>dbpassword1</flyway.password>
+    <flyway.locations>filesystem:${project.basedir}/migration</flyway.locations>
   </properties>
 
   <dependencies>
@@ -32,6 +40,12 @@
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
       <version>${guice.version}</version>
+    </dependency>
+    <!-- Persistence -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgres.version}</version>
     </dependency>
     <!-- Freemarker /Template -->
     <dependency>
@@ -100,6 +114,19 @@
           <finalName>app-${project.version}</finalName>
           <appendAssemblyId>false</appendAssemblyId>
         </configuration>
+      </plugin>
+      <!-- flyway -->
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>${flyway.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgres.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
