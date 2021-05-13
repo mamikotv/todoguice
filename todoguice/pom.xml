@@ -19,6 +19,7 @@
     <junit.version>5.7.1</junit.version>
     <freemarker.version>2.3.31</freemarker.version>
     <postgres.version>42.2.20</postgres.version>
+    <jooq.version>3.14.9</jooq.version>
 
     <!-- flyway -->
     <flyway.version>7.8.2</flyway.version>
@@ -42,6 +43,11 @@
       <version>${guice.version}</version>
     </dependency>
     <!-- Persistence -->
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq</artifactId>
+      <version>${jooq.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -113,6 +119,58 @@
           </descriptorRefs>
           <finalName>app-${project.version}</finalName>
           <appendAssemblyId>false</appendAssemblyId>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen-maven</artifactId>
+        <version>${jooq.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies />
+        <configuration>
+          <jdbc>
+            <driver>org.postgresql.Driver</driver>
+            <url>${flyway.url}</url>
+            <user>${flyway.user}</user>
+            <password>${flyway.password}</password>
+          </jdbc>
+          <generator>
+            <database>
+              <name>org.jooq.meta.postgres.PostgresDatabase</name>
+              <includes>.*</includes>
+              <excludes>flyway_schema_history</excludes>
+              <inputSchema>public</inputSchema>
+            </database>
+            <target>
+              <packageName>app.todoguice</packageName>
+              <directory>${project.build.directory}/generated-sources/</directory>
+            </target>
+          </generator>
         </configuration>
       </plugin>
       <!-- flyway -->
