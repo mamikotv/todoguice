@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Stage;
 import app.todoguice.inection.AppServletModule;
 
 /** App Main */
@@ -13,7 +14,7 @@ public class App {
   private static final Logger log = LoggerFactory.getLogger(App.class);
   
   public static void main(String[] args) {
-    Injector injector = Guice.createInjector(new AppServletModule());
+    Injector injector = Guice.createInjector(Stage.PRODUCTION, new AppServletModule());
     Server server = injector.getInstance(Server.class);
     
     try {

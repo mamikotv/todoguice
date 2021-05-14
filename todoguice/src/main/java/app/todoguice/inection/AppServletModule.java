@@ -22,6 +22,7 @@ public class AppServletModule extends ServletModule {
   @Override
   protected void configureServlets() {
     install(new ConfigModule());
+    install(new PersistenceModule());
 
     bind(GuiceFilter.class).in(Singleton.class);
     bind(FreemarkerServlet.class).in(Singleton.class);
