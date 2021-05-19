@@ -15,6 +15,7 @@ import com.google.inject.servlet.GuiceFilter;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
 import app.todoguice.servlet.IndexServlet;
+import app.todoguice.servlet.PostServlet;
 import freemarker.ext.servlet.FreemarkerServlet;
 
 public class AppServletModule extends ServletModule {
@@ -28,6 +29,8 @@ public class AppServletModule extends ServletModule {
     bind(FreemarkerServlet.class).in(Singleton.class);
 
     serve("/").with(IndexServlet.class);
+    serve("/post").with(PostServlet.class);    
+
     Map<String, String> fmInitParam = ImmutableMap.<String, String>builder()
         .put("TemplatePath", "classpath:template")
         .put("NoCache", "true")
